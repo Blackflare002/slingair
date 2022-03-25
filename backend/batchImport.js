@@ -145,7 +145,7 @@ const { v4: uuidv4 } = require("uuid");
 
 const reservations = [
   {
-    id: uuidv4(),
+    _id: uuidv4(),
     flight: "SA231",
     seat: "4D",
     givenName: "Marty",
@@ -153,15 +153,15 @@ const reservations = [
     email: "marty@backfuture.com",
   },
   {
-    id: uuidv4(),
+    _id: uuidv4(),
     flight: "SA231",
-    seat: "4D",
+    seat: "4A",
     givenName: "Mori",
     surname: "Calliope",
     email: "Mori@hololive.com",
   },
   {
-    id: uuidv4(),
+    _id: uuidv4(),
     flight: "SA231",
     seat: "4C",
     givenName: "Nyanners",
@@ -169,7 +169,7 @@ const reservations = [
     email: "nyan@nyan.com",
   },
   {
-    id: uuidv4(),
+    _id: uuidv4(),
     flight: "SA456",
     seat: "5D",
     givenName: "Korone",
@@ -177,7 +177,7 @@ const reservations = [
     email: "doog@hololive.com",
   },
   {
-    id: uuidv4(),
+    _id: uuidv4(),
     flight: "SA456",
     seat: "4A",
     givenName: "Joe",
@@ -185,7 +185,7 @@ const reservations = [
     email: "potus@whitehouse.gov",
   },
   {
-    id: uuidv4(),
+    _id: uuidv4(),
     flight: "SA456",
     seat: "6B",
     givenName: "George",
@@ -200,12 +200,13 @@ const batchImport = async () => {
   try {
     await client.connect();
     const db = client.db("SlingAir");
-    await db.collection("flights").insertMany(flights);
+    // console.log("FLIGHTS: ", flights[0].seats[0].id);
+    // await db.collection("flights").insertMany(flights);
     await db.collection("reservations").insertMany(reservations);
     console.log({
       status: 201,
       message: "This is the server response.",
-      data: flights,
+      // data: flights,
     });
   } catch (err) {
     console.log({ status: 500, data: null, message: err.message });
@@ -214,3 +215,5 @@ const batchImport = async () => {
 };
 
 batchImport();
+
+// module.exports = {reservations2}
