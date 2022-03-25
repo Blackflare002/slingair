@@ -31,7 +31,7 @@ express()
   .get("/api/get-flights", getFlights)
   .get("/api/get-flight/:_id", getFlight)
   .get("/api/get-reservations", getReservations)
-  .get("/api/get-reservation/:id", getSingleReservation)
+  .get("/api/get-reservation/:_id", getSingleReservation)
 
   .post("/api/add-reservation", addReservation)
 

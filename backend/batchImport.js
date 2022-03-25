@@ -145,7 +145,6 @@ const { v4: uuidv4 } = require("uuid");
 
 const reservations = [
   {
-    _id: uuidv4(),
     flight: "SA231",
     seat: "4D",
     givenName: "Marty",
@@ -153,7 +152,6 @@ const reservations = [
     email: "marty@backfuture.com",
   },
   {
-    _id: uuidv4(),
     flight: "SA231",
     seat: "4A",
     givenName: "Mori",
@@ -201,8 +199,8 @@ const batchImport = async () => {
     await client.connect();
     const db = client.db("SlingAir");
     // console.log("FLIGHTS: ", flights[0].seats[0].id);
-    // await db.collection("flights").insertMany(flights);
-    await db.collection("reservations").insertMany(reservations);
+    await db.collection("flights").insertMany(flights);
+    // await db.collection("reservations").insertMany(reservations);
     console.log({
       status: 201,
       message: "This is the server response.",

@@ -50,7 +50,7 @@ const addReservation = async (req, res) => {
   try {
     await client.connect();
     const db = client.db("SlingAir");
-    // let newRes = { ...req.body, id: uuidv4() };
+    let newRes = { ...req.body, _id: uuidv4() };
     let flight = await db
       .collection("flights")
       .findOne({ _id: req.body.flight });
@@ -64,16 +64,16 @@ const addReservation = async (req, res) => {
     //that's the DB doc's id and the req.body's seat id, stored within the "seat" property,
     //then accesses the isAvailable property, a boolean, and returns that.
     if (check) {
-      await db.collection("reservations").insertOne(req.body);
-    // await db.collection("reservations").insertMany(reservations2);
-    let query = { _id: req.body.flight, "seats.id": req.body.seat };
-    let newValues = { $set: { "seats.$.isAvailable": false } };
-    await db.collection("flights").updateOne(query, newValues);
-    res.status(201).json({
-      status: 201,
-      message: "This is the server response.",
-      // data: newRes,
-    });
+      await db.collection("reservations").insertOne(newRes);
+      // await db.collection("reservations").insertMany(reservations2);
+      let query = { _id: req.body.flight, "seats.id": req.body.seat };
+      let newValues = { $set: { "seats.$.isAvailable": false } };
+      await db.collection("flights").updateOne(query, newValues);
+      res.status(201).json({
+        status: 201,
+        message: "This is the server response.",
+        data: newRes,
+      });
     }
   } catch (err) {
     console.log(err.stack);
@@ -99,10 +99,10 @@ const getReservations = async (req, res) => {
 
 const getSingleReservation = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
-  let id = req.params.id;
+  let _id = req.params._id;
   await client.connect();
   const db = client.db("SlingAir");
-  const result = await db.collection("reservations").findOne({ id });
+  const result = await db.collection("reservations").findOne({ _id });
   result
     ? res.status(200).json({ status: 200, data: result })
     : res.status(404).json({ status: 404, data: "Not Found" });
