@@ -25,7 +25,11 @@ const getFlights = async (req, res) => {
   });
   console.log(result);
   result
-    ? res.status(200).json({ status: 200, data: flightIds })
+    ? res.status(200).json({
+        status: 200,
+        message: "This is the server response. All flight I.Ds.",
+        data: flightIds,
+      })
     : res.status(404).json({ status: 404, data: "Not Found" });
   client.close();
 };
@@ -38,9 +42,12 @@ const getFlight = async (req, res) => {
   const result = await db.collection("flights").findOne({ _id });
   //   console.log(result);
   //   console.log(result.seats);
-
   result
-    ? res.status(200).json({ status: 200, data: result })
+    ? res.status(200).json({
+        status: 200,
+        message: "This is the server response. Flight by I.D.",
+        data: result,
+      })
     : res.status(404).json({ status: 404, data: "Not Found" });
   client.close();
 };
@@ -71,7 +78,7 @@ const addReservation = async (req, res) => {
       await db.collection("flights").updateOne(query, newValues);
       res.status(201).json({
         status: 201,
-        message: "This is the server response.",
+        message: "This is the server response. Reservation added.",
         data: newRes,
       });
     }
@@ -87,12 +94,12 @@ const getReservations = async (req, res) => {
   await client.connect();
   const db = client.db("SlingAir");
   const result = await db.collection("reservations").find().toArray();
-  //   let ids = result.map((el) => {
-  //     return el.id;
-  //   });
-  //   console.log(ids);
   result
-    ? res.status(200).json({ status: 200, data: result })
+    ? res.status(200).json({
+        status: 200,
+        message: "This is the server response. All reservations.",
+        data: result,
+      })
     : res.status(404).json({ status: 404, data: "Not Found" });
   client.close();
 };
@@ -104,14 +111,88 @@ const getSingleReservation = async (req, res) => {
   const db = client.db("SlingAir");
   const result = await db.collection("reservations").findOne({ _id });
   result
-    ? res.status(200).json({ status: 200, data: result })
+    ? res.status(200).json({
+        status: 200,
+        message: "This is the server response. Reservation by I.D.",
+        data: result,
+      })
     : res.status(404).json({ status: 404, data: "Not Found" });
   client.close();
 };
 
-const deleteReservation = (req, res) => {};
+const deleteReservation = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  await client.connect();
+  const db = client.db("SlingAir");
+  await db.collection("reservations");
+  let reservation = await db
+    .collection("reservations")
+    .findOne({ _id: req.params._id });
+  let result = null;
+  if (reservation) {
+    let reservationFlight = reservation.flight;
+    let reservationSeat = reservation.seat;
+    // console.log("RES FLIGHT: ", reservationFlight);
+    // console.log("RES SEAT: ", reservationSeat);
+    // console.log("RES SEAT AVAILABLE: ", );
+    // let flight = await db
+    //   .collection("flights")
+    //   .findOne({ _id: reservationFlight });
+    // console.log("FLIGHT: ", flight);
+    let query = { _id: reservationFlight, "seats.id": reservationSeat };
+    let newValues = { $set: { "seats.$.isAvailable": true } };
+    // console.log("QUERY: ", query);
+    // console.log("VALUES: ", newValues);
+    await db.collection("flights").updateOne(query, newValues);
+    let _id = req.params._id;
+    result = await db.collection("reservations").deleteOne({ _id });
+  }
+  console.log(result);
+  result
+    ? res.status(204).json({
+        status: 204,
+        message: "This is the server response. Reservation deleted.",
+        data: result,
+      })
+    : res.status(404).json({ status: 404, data: null, message: "Not Found" });
+  client.close();
+};
 
-const updateReservation = (req, res) => {};
+const updateReservation = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  await client.connect();
+  const db = client.db("SlingAir");
+  await db.collection("reservations");
+  let reservation = await db
+    .collection("reservations")
+    .findOne({ _id: req.params._id });
+  let result = null;
+  if (reservation) {
+    result = true;
+    //get the seat in the reservation
+    //mark it as available
+    //get the seat in the req
+    //mark it as unavailable
+    let query = { _id: req.params._id };
+    let newValues = { $set: { ...req.body } };
+    await db.collection("reservations").updateOne(query, newValues);
+  }
+  // let thing = { ...reservation };
+  // console.log("SPREAD RES: ", thing);
+  // console.log("REQ.BODY: ", req.body);
+  // let query = { _id: req.params._id };
+  // let newValues = { $set: { ...req.body } };
+  // console.log("QUERY: ", query);
+  // console.log("VALUES: ", newValues);
+  // await db.collection("reservations").updateOne(query, newValues);
+  result
+    ? res.status(200).json({
+        status: 200,
+        message: "This is the server response. Reservation updated.",
+        data: result,
+      })
+    : res.status(404).json({ status: 404, data: null, message: "Not Found" });
+};
 
 module.exports = {
   getFlights,

@@ -35,9 +35,9 @@ express()
 
   .post("/api/add-reservation", addReservation)
 
-  .patch("/api/update-reservation", updateReservation)
+  .patch("/api/update-reservation/:_id", updateReservation)
 
-  .delete("/api/delete-reservation", deleteReservation)
+  .delete("/api/delete-reservation/:_id", deleteReservation)
 
   // ---------------------------------
   // Nothing to modify below this line
