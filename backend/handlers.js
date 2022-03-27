@@ -124,7 +124,6 @@ const deleteReservation = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   await client.connect();
   const db = client.db("SlingAir");
-  await db.collection("reservations");
   let reservation = await db
     .collection("reservations")
     .findOne({ _id: req.params._id });
@@ -134,7 +133,6 @@ const deleteReservation = async (req, res) => {
     let reservationSeat = reservation.seat;
     // console.log("RES FLIGHT: ", reservationFlight);
     // console.log("RES SEAT: ", reservationSeat);
-    // console.log("RES SEAT AVAILABLE: ", );
     // let flight = await db
     //   .collection("flights")
     //   .findOne({ _id: reservationFlight });
@@ -166,30 +164,55 @@ const updateReservation = async (req, res) => {
   let reservation = await db
     .collection("reservations")
     .findOne({ _id: req.params._id });
+  let flight = await db.collection("flights").findOne({ _id: req.body.flight });
   let result = null;
   if (reservation) {
-    result = true;
     //get the seat in the reservation
+    let resSeat = reservation.seat;
+    console.log("RES SEAT: ", resSeat);
+    //find the reservation's seat in the flight data
     //mark it as available
+    let flightSeat = null;
+    flightSeat = flight.seats.find((el) => {
+      return el.id === resSeat;
+    });
+    flightSeat.isAvailable = true;
+    console.log("FLIGHT SEAT: ", flightSeat);
     //get the seat in the req
+    //find it in the flight data
     //mark it as unavailable
-    let query = { _id: req.params._id };
-    let newValues = { $set: { ...req.body } };
-    await db.collection("reservations").updateOne(query, newValues);
+    console.log("REQ: ", req.body.seat);
+    let reqSeat = req.body.seat;
+    let flightSeat2 = null;
+    flightSeat2 = flight.seats.find((el) => {
+      return el.id === reqSeat;
+    });
+    flightSeat2.isAvailable = false;
+    console.log("FLIGHT SEAT 2: ", flightSeat2);
+    //actually update the flight data! This changes the daa in the flights doc,
+    //the seat originally listed in the reservation is changed back to isAvailable true.
+    let query0 = { _id: reservation.flight, "seats.id": reservation.seat };
+    let newValues0 = { $set: { "seats.$.isAvailable": true } };
+    await db.collection("flights").updateOne(query0, newValues0);
+    //This changes the seat specified in the req to isAvailable false.
+    let query = { _id: req.body.flight, "seats.id": req.body.seat };
+    let newValues = { $set: { "seats.$.isAvailable": false } };
+    await db.collection("flights").updateOne(query, newValues);
+    //This changes the reservation doc to match the req data.
+    let query2 = { _id: req.params._id };
+    let newValues2 = { $set: { ...req.body } };
+    await db.collection("reservations").updateOne(query2, newValues2);
+    //////
+    result = true;
+    reservation = await db
+      .collection("reservations")
+      .findOne({ _id: req.params._id });
   }
-  // let thing = { ...reservation };
-  // console.log("SPREAD RES: ", thing);
-  // console.log("REQ.BODY: ", req.body);
-  // let query = { _id: req.params._id };
-  // let newValues = { $set: { ...req.body } };
-  // console.log("QUERY: ", query);
-  // console.log("VALUES: ", newValues);
-  // await db.collection("reservations").updateOne(query, newValues);
   result
     ? res.status(200).json({
         status: 200,
         message: "This is the server response. Reservation updated.",
-        data: result,
+        data: reservation,
       })
     : res.status(404).json({ status: 404, data: null, message: "Not Found" });
 };
