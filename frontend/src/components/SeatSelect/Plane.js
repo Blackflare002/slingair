@@ -5,40 +5,61 @@ import FlightContext from "../../flightContext";
 
 const Plane = ({}) => {
   const [seating, setSeating] = useState([]);
-  const { plane } = useContext(FlightContext);
+  const { plane, reservationInfo, setReservationInfo } =
+    useContext(FlightContext);
   // const { planeID } = useParams();
   //state variable
   // const [plane, setPlane] = useState(null);
-
+  //
+  //
   useEffect(() => {
     // TODO: get seating data for selected flight
-    plane &&
-      fetch(`/api/get-flight/${plane}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setSeating(data);
-          console.log(data);
-          // console.log(planeID);
-        });
-  }, []);
-
+    // plane &&
+    fetch(`/api/get-flight/${plane}`)
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log("LOG DATA: ", data);
+        // console.log("DATA 2: ", data.data);
+        // console.log("DATA SEATS: ", data.data.seats);
+        setSeating(data.data.seats);
+      });
+  }, [plane]);
+  //
+  // const [seatId, setSeatId] = useState(null);
+  //
   return (
     <Wrapper>
       {seating && seating.length > 0 ? (
-        seating.map((seat) => (
-          <SeatWrapper key={`seat-${seat.id}`}>
-            <label>
-              {seat.isAvailable ? (
-                <>
-                  <Seat type="radio" name="seat" onChange={() => {}} />
-                  <Available>{seat.id}</Available>
-                </>
-              ) : (
-                <Unavailable>{seat.id}</Unavailable>
-              )}
-            </label>
-          </SeatWrapper>
-        ))
+        seating.map((seat) => {
+          // console.log(seat.id);
+          return (
+            <SeatWrapper key={`seat-${seat.id}`}>
+              <label>
+                {seat.isAvailable ? (
+                  <>
+                    <Seat
+                      type="radio"
+                      name="seat"
+                      onChange={() => {
+                        // setSeatId(seat.id);
+                        let updatedValue = {};
+                        updatedValue = { seatId: seat.id };
+                        setReservationInfo((reservationInfo) => ({
+                          ...reservationInfo,
+                          ...updatedValue,
+                        }));
+                        console.log("INFO: ", reservationInfo);
+                      }}
+                    />
+                    <Available>{seat.id}</Available>
+                  </>
+                ) : (
+                  <Unavailable>{seat.id}</Unavailable>
+                )}
+              </label>
+            </SeatWrapper>
+          );
+        })
       ) : (
         <Placeholder>Select a Flight to view seating.</Placeholder>
       )}

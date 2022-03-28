@@ -16,19 +16,30 @@ const SeatSelect = ({}) => {
   //       console.log("FLIGHT NAMES: ", flightNames);
   //     });
   // }, []);
-  const { flightNames, plane, setPlane } = useContext(FlightContext);
+  const {
+    flightNames,
+    plane,
+    setPlane,
+    handleChange,
+    reservationInfo,
+    setReservationInfo,
+  } = useContext(FlightContext);
   //
   // const [plane, setPlane] = useState(null);
-  const handleClick = (value) => {
-    setPlane(value);
-    console.log("VALUE: ", value);
-    // console.log("PLANE: ", plane);
-  };
+
+  // const handleChange = (value) => {
+  //   setPlane(value);
+  //   console.log("VALUE: ", value);
+
+  // console.log("PLANE: ", plane);
+  // };
+
+  //
   return (
     <>
       <Dropdown>
         <label htmlFor="flights">Flight Number:</label>
-        <select name="flights" onChange={(ev) => handleClick(ev.target.value)}>
+        <select name="flights" onChange={(ev) => handleChange(ev.target.value)}>
           <option>Select a flight</option>
           {flightNames?.map((el) => {
             return (
@@ -52,19 +63,52 @@ const SeatSelect = ({}) => {
                 type="text"
                 name="givenName"
                 placeholder="Enter your first name!"
+                //onchange
+                //event.target.value
+                //state variable object
+                onChange={(ev) => {
+                  let updatedValue = {};
+                  updatedValue = { givenName: ev.target.value };
+                  setReservationInfo((reservationInfo) => ({
+                    ...reservationInfo,
+                    ...updatedValue,
+                  }));
+                  console.log("INFO: ", reservationInfo);
+                }}
+                //
               />
               <label htmlFor="surname">Last Name</label>
               <input
                 type="text"
                 name="surname"
                 placeholder="Enter your last name!"
+                onChange={(ev) => {
+                  let updatedValue = {};
+                  updatedValue = { surname: ev.target.value };
+                  setReservationInfo((reservationInfo) => ({
+                    ...reservationInfo,
+                    ...updatedValue,
+                  }));
+                  console.log("INFO: ", reservationInfo);
+                }}
               />
               <label htmlFor="email">Email</label>
               <input
                 type="email"
                 name="email"
                 placeholder="Enter your email!"
+                onChange={(ev) => {
+                  let updatedValue = {};
+                  updatedValue = { email: ev.target.value };
+                  setReservationInfo((reservationInfo) => ({
+                    ...reservationInfo,
+                    ...updatedValue,
+                  }));
+                  console.log("INFO: ", reservationInfo);
+                }}
               />
+              <Button>Submit</Button>
+              {/* onClick={} */}
             </FormBoxInner>
           </form>
         </FormBox>
@@ -72,6 +116,12 @@ const SeatSelect = ({}) => {
     </>
   );
 };
+
+const Button = styled.button`
+  background-color: red;
+  margin-top: 20px;
+  border: none;
+`;
 
 const Dropdown = styled.div`
   background-color: red;

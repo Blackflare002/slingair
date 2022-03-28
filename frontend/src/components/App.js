@@ -6,6 +6,7 @@ import SeatSelect from "./SeatSelect";
 import Confirmation from "./Confirmation";
 import GlobalStyles from "./GlobalStyles";
 import Plane from "./SeatSelect/Plane";
+import { useState } from "react";
 
 const App = () => {
   return (
