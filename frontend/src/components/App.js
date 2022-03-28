@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import SeatSelect from "./SeatSelect";
 import Confirmation from "./Confirmation";
 import GlobalStyles from "./GlobalStyles";
+import Plane from "./SeatSelect/Plane";
 
 const App = () => {
   return (
@@ -19,6 +20,9 @@ const App = () => {
           <Route exact path="/confirmed">
             <Confirmation />
           </Route>
+          {/* <Route exact path="/api/get-flight/:_id">
+            <SeatSelect />
+          </Route> */}
           <Route path="">404: Oops!</Route>
         </Switch>
         <Footer />

@@ -1,11 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import FlightContext from "../../flightContext";
 
 const Plane = ({}) => {
   const [seating, setSeating] = useState([]);
+  const { plane } = useContext(FlightContext);
+  // const { planeID } = useParams();
+  //state variable
+  // const [plane, setPlane] = useState(null);
 
   useEffect(() => {
     // TODO: get seating data for selected flight
+    plane &&
+      fetch(`/api/get-flight/${plane}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setSeating(data);
+          console.log(data);
+          // console.log(planeID);
+        });
   }, []);
 
   return (
@@ -75,7 +89,7 @@ const Seat = styled.input`
   margin: 0;
 
   &:checked {
-    span {
+    + span {
       background: var(--color-alabama-crimson);
       color: #fff;
       font-weight: 700;
