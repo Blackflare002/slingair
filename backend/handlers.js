@@ -81,6 +81,9 @@ const addReservation = async (req, res) => {
         message: "This is the server response. Reservation added.",
         data: newRes,
       });
+      //store in localstorage
+      // sessionStorage.setItem("reservation", newRes);
+      //
     }
   } catch (err) {
     console.log(err.stack);
@@ -208,6 +211,10 @@ const updateReservation = async (req, res) => {
       .collection("reservations")
       .findOne({ _id: req.params._id });
   }
+  //store in localstorage
+  // sessionStorage.setItem("reservation", reservation);
+  //do this in the frontend
+  //
   result
     ? res.status(200).json({
         status: 200,
