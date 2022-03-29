@@ -61,13 +61,13 @@ const addReservation = async (req, res) => {
     let flight = await db
       .collection("flights")
       .findOne({ _id: req.body.flight });
-    console.log(flight);
+    // console.log(flight);
     //the flight property in the req.body contains the flight's ID, like "SA456"
     //the .findOne() looks in the DB for an "_id" property that matches req.body.flight, then returns that
     let check = flight.seats.find((el) => {
       return el.id === req.body.seatId;
     }).isAvailable;
-    console.log(check.isAvailable);
+    // console.log(check.isAvailable);
     //"flight" var is the relevant document in the DB with the "_id" property that matches req.body.flight
     //"check" var accesses the seats array within that doc, finds all elements inside that match el.id === req.body.seat,
     //that's the DB doc's id and the req.body's seat id, stored within the "seat" property,
@@ -132,7 +132,7 @@ const deleteReservation = async (req, res) => {
   let result = null;
   if (reservation) {
     let reservationFlight = reservation.flight;
-    let reservationSeat = reservation.seat;
+    let reservationSeat = reservation.seatId;
     // console.log("RES FLIGHT: ", reservationFlight);
     // console.log("RES SEAT: ", reservationSeat);
     // console.log("FLIGHT: ", flight);
@@ -167,7 +167,7 @@ const updateReservation = async (req, res) => {
   let result = null;
   if (reservation) {
     //get the seat in the reservation
-    let resSeat = reservation.seat;
+    let resSeat = reservation.seatId;
     console.log("RES SEAT: ", resSeat);
     //find the reservation's seat in the flight data
     //mark it as available
@@ -180,21 +180,21 @@ const updateReservation = async (req, res) => {
     //get the seat in the req
     //find it in the flight data
     //mark it as unavailable
-    console.log("REQ: ", req.body.seat);
-    let reqSeat = req.body.seat;
+    console.log("REQ: ", req.body.seatId);
+    let reqSeat = req.body.seatId;
     let flightSeat2 = null;
     flightSeat2 = flight.seats.find((el) => {
       return el.id === reqSeat;
     });
     flightSeat2.isAvailable = false;
     console.log("FLIGHT SEAT 2: ", flightSeat2);
-    //actually update the flight data! This changes the daa in the flights doc,
+    //actually update the flight data! This changes the data in the flights doc,
     //the seat originally listed in the reservation is changed back to isAvailable true.
-    let query0 = { _id: reservation.flight, "seats.id": reservation.seat };
+    let query0 = { _id: reservation.flight, "seats.id": reservation.seatId };
     let newValues0 = { $set: { "seats.$.isAvailable": true } };
     await db.collection("flights").updateOne(query0, newValues0);
     //This changes the seat specified in the req to isAvailable false.
-    let query = { _id: req.body.flight, "seats.id": req.body.seat };
+    let query = { _id: req.body.flight, "seats.id": req.body.seatId };
     let newValues = { $set: { "seats.$.isAvailable": false } };
     await db.collection("flights").updateOne(query, newValues);
     //This changes the reservation doc to match the req data.

@@ -1,3 +1,4 @@
+// import { useEffect } from "react";
 import styled from "styled-components";
 import tombstone from "../assets/tombstone.png";
 
@@ -10,7 +11,7 @@ const Confirmation = () => {
         <TextBox>
           <InnerTextBox>
             <FlightHeader>Flight Confirmed</FlightHeader>
-            <p>Reservation ID: {reservation._id}</p>
+            {reservation._id && <p>Reservation ID: {reservation._id}</p>}
             <p>Flight: {reservation.flight}</p>
             <p>Seat: {reservation.seatId}</p>
             <p>Name: {`${reservation.givenName} ${reservation.surname}`}</p>
