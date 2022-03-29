@@ -157,13 +157,13 @@ const SeatSelect = ({}) => {
 };
 
 const Button = styled.button`
-  background-color: red;
+  background-color: var(--color-alabama-crimson);
   margin-top: 20px;
   border: none;
 `;
 
 const Dropdown = styled.div`
-  background-color: red;
+  background-color: darkred;
   padding: 20px;
   display: flex;
   gap: 10px;
@@ -180,7 +180,7 @@ const FormBoxInner = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: red 2px solid;
+  border: var(--color-alabama-crimson) 2px solid;
   padding: 20px;
 `;
 

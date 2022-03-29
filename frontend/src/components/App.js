@@ -7,6 +7,7 @@ import Confirmation from "./Confirmation";
 import GlobalStyles from "./GlobalStyles";
 import Plane from "./SeatSelect/Plane";
 import { useState } from "react";
+import Reservation from "./Reservation";
 
 const App = () => {
   return (
@@ -20,6 +21,9 @@ const App = () => {
           </Route>
           <Route exact path="/confirmed">
             <Confirmation />
+          </Route>
+          <Route exact path="/reservation">
+            <Reservation />
           </Route>
           <Route path="">404: Oops!</Route>
         </Switch>

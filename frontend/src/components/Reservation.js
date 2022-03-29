@@ -1,15 +1,14 @@
 import styled from "styled-components";
-import tombstone from "../assets/tombstone.png";
 
 const reservation = JSON.parse(sessionStorage.getItem("reservation"));
 
-const Confirmation = () => {
+const Reservation = () => {
   return (
     <Wrapper>
       <InnerBox>
         <TextBox>
           <InnerTextBox>
-            <FlightHeader>Flight Confirmed</FlightHeader>
+            <FlightHeader>Your Reservation</FlightHeader>
             <p>Reservation ID: {reservation._id}</p>
             <p>Flight: {reservation.flight}</p>
             <p>Seat: {reservation.seatId}</p>
@@ -17,9 +16,6 @@ const Confirmation = () => {
             <p>Email: {reservation.email}</p>
           </InnerTextBox>
         </TextBox>
-        <div>
-          <TombstoneImage src={tombstone} />
-        </div>
       </InnerBox>
     </Wrapper>
   );
@@ -65,8 +61,4 @@ const Wrapper = styled.div`
   /* border: 2px solid black; */
 `;
 
-const TombstoneImage = styled.img`
-  height: 250px;
-`;
-
-export default Confirmation;
+export default Reservation;
