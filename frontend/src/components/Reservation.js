@@ -30,7 +30,6 @@ const InnerTextBox = styled.div`
 const FlightHeader = styled.h4`
   color: var(--color-alabama-crimson);
   border-bottom: 2px solid var(--color-alabama-crimson);
-  /* border-bottom: 2px solid red; */
   font-weight: bold;
   font-size: large;
   font-family: sans-serif;
@@ -46,11 +45,8 @@ const TextBox = styled.div`
 
 const InnerBox = styled.div`
   display: flex;
-  /* justify-content: center; */
-  /* justify-self: center; */
   align-items: center;
   flex-direction: column;
-  /* border: 2px solid white; */
 `;
 
 const Wrapper = styled.div`
@@ -58,7 +54,6 @@ const Wrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 100vw;
-  /* border: 2px solid black; */
 `;
 
 export default Reservation;

@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+// Link
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 import SeatSelect from "./SeatSelect";
 import Confirmation from "./Confirmation";
 import GlobalStyles from "./GlobalStyles";
-import Plane from "./SeatSelect/Plane";
-import { useState } from "react";
+// import Plane from "./SeatSelect/Plane";
+// import { useState } from "react";
 import Reservation from "./Reservation";
 
 const App = () => {

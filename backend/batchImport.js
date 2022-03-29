@@ -139,8 +139,6 @@ const flights = [
   },
 ];
 
-// console.log(flights);
-
 const { v4: uuidv4 } = require("uuid");
 
 const reservations = [
@@ -200,7 +198,6 @@ const batchImport = async () => {
     const db = client.db("SlingAir");
     // console.log("FLIGHTS: ", flights[0].seats[0].id);
     await db.collection("flights").insertMany(flights);
-    // await db.collection("reservations").insertMany(reservations);
     console.log({
       status: 201,
       message: "This is the server response.",
@@ -213,5 +210,3 @@ const batchImport = async () => {
 };
 
 batchImport();
-
-// module.exports = {reservations2}

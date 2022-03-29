@@ -7,8 +7,6 @@ export const FlightContextProvider = ({ children }) => {
   const [flightNames, setFlightNames] = useState(null);
   const [reservationInfo, setReservationInfo] = useState({});
   //
-  // sessionStorage.setItem("reservation", JSON.stringify(reservationInfo));
-  //
   useEffect(() => {
     fetch(`/api/get-flights/`)
       .then((res) => res.json())

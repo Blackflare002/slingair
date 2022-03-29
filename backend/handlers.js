@@ -13,7 +13,6 @@ const { v4: uuidv4 } = require("uuid");
 
 // use this data. Changes will persist until the server (backend) restarts.
 const { flights, reservations } = require("./data");
-// const { reservations2 } = require("./batchImport");
 
 const getFlights = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
@@ -75,7 +74,6 @@ const addReservation = async (req, res) => {
     //then accesses the isAvailable property, a boolean, and returns that.
     if (check) {
       await db.collection("reservations").insertOne(newRes);
-      // await db.collection("reservations").insertMany(reservations2);
       let query = { _id: req.body.flight, "seats.id": req.body.seatId };
       let newValues = { $set: { "seats.$.isAvailable": false } };
       await db.collection("flights").updateOne(query, newValues);
@@ -84,9 +82,6 @@ const addReservation = async (req, res) => {
         message: "This is the server response. Reservation added.",
         data: newRes,
       });
-      //store in localstorage
-      // sessionStorage.setItem("reservation", newRes);
-      //
     }
   } catch (err) {
     console.log(err.stack);
@@ -140,9 +135,6 @@ const deleteReservation = async (req, res) => {
     let reservationSeat = reservation.seat;
     // console.log("RES FLIGHT: ", reservationFlight);
     // console.log("RES SEAT: ", reservationSeat);
-    // let flight = await db
-    //   .collection("flights")
-    //   .findOne({ _id: reservationFlight });
     // console.log("FLIGHT: ", flight);
     let query = { _id: reservationFlight, "seats.id": reservationSeat };
     let newValues = { $set: { "seats.$.isAvailable": true } };
@@ -209,16 +201,12 @@ const updateReservation = async (req, res) => {
     let query2 = { _id: req.params._id };
     let newValues2 = { $set: { ...req.body } };
     await db.collection("reservations").updateOne(query2, newValues2);
-    //////
+    //
     result = true;
     reservation = await db
       .collection("reservations")
       .findOne({ _id: req.params._id });
   }
-  //store in localstorage
-  // sessionStorage.setItem("reservation", reservation);
-  //do this in the frontend
-  //
   result
     ? res.status(200).json({
         status: 200,

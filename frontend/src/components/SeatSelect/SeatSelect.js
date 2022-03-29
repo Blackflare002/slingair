@@ -1,39 +1,19 @@
 import Plane from "./Plane";
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+// useEffect, useState
+import { useContext } from "react";
 import FlightContext from "../../flightContext";
 import { useHistory } from "react-router-dom";
 
-//put the dropdown in here
-const SeatSelect = ({}) => {
-  // const [flightNames, setFlightNames] = useState(null);
-  // useEffect(() => {
-  //   fetch(`/api/get-flights/`)
-  //     .then((res) => res.json())
-  //     .then((info) => {
-  //       // console.log(info);
-  //       console.log("INFO.DATA: ", info.data);
-  //       setFlightNames(info.data);
-  //       console.log("FLIGHT NAMES: ", flightNames);
-  //     });
-  // }, []);
+const SeatSelect = () => {
   const {
     flightNames,
-    plane,
-    setPlane,
+    // plane,
+    // setPlane,
     handleChange,
     reservationInfo,
     setReservationInfo,
   } = useContext(FlightContext);
-  //
-  // const [plane, setPlane] = useState(null);
-
-  // const handleChange = (value) => {
-  //   setPlane(value);
-  //   console.log("VALUE: ", value);
-
-  // console.log("PLANE: ", plane);
-  // };
   const history = useHistory();
   const handleClick = (ev) => {
     //create a new reservation
@@ -55,12 +35,7 @@ const SeatSelect = ({}) => {
         console.log(json);
         sessionStorage.setItem("reservation", JSON.stringify(json.data));
       });
-    // .then((res) => console.log(res))
-    // .then((res) =>
-    //   sessionStorage.setItem("reservation", JSON.stringify(res))
-    // );
-    // sessionStorage.setItem("reservation", JSON.stringify(reservationInfo));
-    // history.push("/confirmed");
+    history.push("/confirmed");
   };
   //
   return (
@@ -167,13 +142,11 @@ const Dropdown = styled.div`
   padding: 20px;
   display: flex;
   gap: 10px;
-  /* align-items: baseline; */
 `;
 
 const ContentBox = styled.div`
   display: flex;
   margin-left: 20px;
-  /* align-items: flex-start; */
 `;
 
 const FormBoxInner = styled.div`
@@ -185,17 +158,11 @@ const FormBoxInner = styled.div`
 `;
 
 const FormBox = styled.div`
-  /* align-items: flex-start; */
   display: flex;
-  /* border: red 2px solid; */
-  /* flex-direction: column; */
   width: 30vw;
   margin-top: 25px;
   margin-bottom: 20px;
   height: 35vh;
-  /* justify-content: center; */
-  /* position: relative; */
-  /* left: 350px; */
 `;
 
 export default SeatSelect;

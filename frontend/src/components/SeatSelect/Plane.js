@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import FlightContext from "../../flightContext";
 
@@ -7,10 +7,6 @@ const Plane = ({}) => {
   const [seating, setSeating] = useState([]);
   const { plane, reservationInfo, setReservationInfo } =
     useContext(FlightContext);
-  // const { planeID } = useParams();
-  //state variable
-  // const [plane, setPlane] = useState(null);
-  //
   //
   useEffect(() => {
     // TODO: get seating data for selected flight
@@ -24,8 +20,6 @@ const Plane = ({}) => {
           setSeating(data.data.seats);
         });
   }, [plane]);
-  //
-  // const [seatId, setSeatId] = useState(null);
   //
   return (
     <BiggerWrapper>
