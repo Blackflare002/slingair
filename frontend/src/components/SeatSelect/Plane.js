@@ -14,15 +14,15 @@ const Plane = ({}) => {
   //
   useEffect(() => {
     // TODO: get seating data for selected flight
-    // plane &&
-    fetch(`/api/get-flight/${plane}`)
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log("LOG DATA: ", data);
-        // console.log("DATA 2: ", data.data);
-        // console.log("DATA SEATS: ", data.data.seats);
-        setSeating(data.data.seats);
-      });
+    plane &&
+      fetch(`/api/get-flight/${plane}`)
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log("LOG DATA: ", data);
+          // console.log("DATA 2: ", data.data);
+          // console.log("DATA SEATS: ", data.data.seats);
+          setSeating(data.data.seats);
+        });
   }, [plane]);
   //
   // const [seatId, setSeatId] = useState(null);

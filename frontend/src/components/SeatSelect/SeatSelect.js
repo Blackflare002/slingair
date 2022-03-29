@@ -2,6 +2,7 @@ import Plane from "./Plane";
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import FlightContext from "../../flightContext";
+import { useHistory } from "react-router-dom";
 
 //put the dropdown in here
 const SeatSelect = ({}) => {
@@ -33,13 +34,45 @@ const SeatSelect = ({}) => {
 
   // console.log("PLANE: ", plane);
   // };
-
+  const history = useHistory();
+  const handleClick = () => {
+    //create a new reservation
+    //put info in local storage
+    //redirect to a confirmation page
+    fetch("/api/add-reservation", {
+      method: "POST",
+      body: JSON.stringify({ reservationInfo }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => console.log(res))
+      .then((res) =>
+        sessionStorage.setItem("reservation", JSON.stringify(res))
+      );
+    // sessionStorage.setItem("reservation", JSON.stringify(reservationInfo));
+    history.push("/confirmed");
+  };
   //
   return (
     <>
       <Dropdown>
         <label htmlFor="flights">Flight Number:</label>
-        <select name="flights" onChange={(ev) => handleChange(ev.target.value)}>
+        <select
+          name="flights"
+          onChange={(ev) => {
+            handleChange(ev.target.value);
+            let updatedValue = {};
+            updatedValue = { flight: ev.target.value };
+            setReservationInfo((reservationInfo) => ({
+              ...reservationInfo,
+              ...updatedValue,
+            }));
+            console.log("INFO: ", reservationInfo);
+          }}
+        >
           <option>Select a flight</option>
           {flightNames?.map((el) => {
             return (
@@ -107,8 +140,7 @@ const SeatSelect = ({}) => {
                   console.log("INFO: ", reservationInfo);
                 }}
               />
-              <Button>Submit</Button>
-              {/* onClick={} */}
+              <Button onClick={handleClick}>Submit</Button>
             </FormBoxInner>
           </form>
         </FormBox>

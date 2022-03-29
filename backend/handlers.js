@@ -30,7 +30,7 @@ const getFlights = async (req, res) => {
         message: "This is the server response. All flight I.Ds.",
         data: flightIds,
       })
-    : res.status(404).json({ status: 404, data: "Not Found" });
+    : res.status(404).json({ status: 404, message: "Not Found", data: null });
   client.close();
 };
 
@@ -48,7 +48,7 @@ const getFlight = async (req, res) => {
         message: "This is the server response. Flight by I.D.",
         data: result,
       })
-    : res.status(404).json({ status: 404, data: "Not Found" });
+    : res.status(404).json({ status: 404, message: "Not Found", data: null });
   client.close();
 };
 
@@ -61,6 +61,7 @@ const addReservation = async (req, res) => {
     let flight = await db
       .collection("flights")
       .findOne({ _id: req.body.flight });
+    console.log(flight);
     //the flight property in the req.body contains the flight's ID, like "SA456"
     //the .findOne() looks in the DB for an "_id" property that matches req.body.flight, then returns that
     let check = flight.seats.find((el) => {
@@ -103,7 +104,7 @@ const getReservations = async (req, res) => {
         message: "This is the server response. All reservations.",
         data: result,
       })
-    : res.status(404).json({ status: 404, data: "Not Found" });
+    : res.status(404).json({ status: 404, message: "Not Found", data: null });
   client.close();
 };
 
@@ -118,8 +119,9 @@ const getSingleReservation = async (req, res) => {
         status: 200,
         message: "This is the server response. Reservation by I.D.",
         data: result,
+        id: result._id,
       })
-    : res.status(404).json({ status: 404, data: "Not Found" });
+    : res.status(404).json({ status: 404, message: "Not Found" });
   client.close();
 };
 
