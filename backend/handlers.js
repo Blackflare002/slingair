@@ -54,6 +54,7 @@ const getFlight = async (req, res) => {
 
 const addReservation = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
+  console.log(req.body);
   try {
     await client.connect();
     const db = client.db("SlingAir");
@@ -65,8 +66,9 @@ const addReservation = async (req, res) => {
     //the flight property in the req.body contains the flight's ID, like "SA456"
     //the .findOne() looks in the DB for an "_id" property that matches req.body.flight, then returns that
     let check = flight.seats.find((el) => {
-      return el.id === req.body.seat;
+      return el.id === req.body.seatId;
     }).isAvailable;
+    console.log(check.isAvailable);
     //"flight" var is the relevant document in the DB with the "_id" property that matches req.body.flight
     //"check" var accesses the seats array within that doc, finds all elements inside that match el.id === req.body.seat,
     //that's the DB doc's id and the req.body's seat id, stored within the "seat" property,
@@ -74,7 +76,7 @@ const addReservation = async (req, res) => {
     if (check) {
       await db.collection("reservations").insertOne(newRes);
       // await db.collection("reservations").insertMany(reservations2);
-      let query = { _id: req.body.flight, "seats.id": req.body.seat };
+      let query = { _id: req.body.flight, "seats.id": req.body.seatId };
       let newValues = { $set: { "seats.$.isAvailable": false } };
       await db.collection("flights").updateOne(query, newValues);
       res.status(201).json({

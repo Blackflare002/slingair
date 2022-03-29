@@ -1,6 +1,7 @@
 import styled from "styled-components";
-
 import tombstone from "../assets/tombstone.png";
+
+const reservation = JSON.parse(sessionStorage.getItem("reservation"));
 
 const Confirmation = () => {
   return (
@@ -9,7 +10,7 @@ const Confirmation = () => {
         <TextBox>
           <InnerTextBox>
             <FlightHeader>Flight Confirmed</FlightHeader>
-            <p>Reservation ID: {null}</p>
+            <p>Reservation ID: {reservation._id}</p>
             <p>Flight: {null}</p>
             <p>Seat: {null}</p>
             <p>Name: {null}</p>

@@ -35,25 +35,32 @@ const SeatSelect = ({}) => {
   // console.log("PLANE: ", plane);
   // };
   const history = useHistory();
-  const handleClick = () => {
+  const handleClick = (ev) => {
     //create a new reservation
     //put info in local storage
     //redirect to a confirmation page
+    ev.preventDefault();
     fetch("/api/add-reservation", {
       method: "POST",
-      body: JSON.stringify({ reservationInfo }),
+      body: JSON.stringify(reservationInfo),
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
-      .then((res) => console.log(res))
-      .then((res) =>
-        sessionStorage.setItem("reservation", JSON.stringify(res))
-      );
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => {
+        console.log(json);
+        sessionStorage.setItem("reservation", JSON.stringify(json.data));
+      });
+    // .then((res) => console.log(res))
+    // .then((res) =>
+    //   sessionStorage.setItem("reservation", JSON.stringify(res))
+    // );
     // sessionStorage.setItem("reservation", JSON.stringify(reservationInfo));
-    history.push("/confirmed");
+    // history.push("/confirmed");
   };
   //
   return (
@@ -140,7 +147,7 @@ const SeatSelect = ({}) => {
                   console.log("INFO: ", reservationInfo);
                 }}
               />
-              <Button onClick={handleClick}>Submit</Button>
+              <Button onClick={(ev) => handleClick(ev)}>Submit</Button>
             </FormBoxInner>
           </form>
         </FormBox>

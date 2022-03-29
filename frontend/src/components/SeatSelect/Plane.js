@@ -28,44 +28,50 @@ const Plane = ({}) => {
   // const [seatId, setSeatId] = useState(null);
   //
   return (
-    <Wrapper>
-      {seating && seating.length > 0 ? (
-        seating.map((seat) => {
-          // console.log(seat.id);
-          return (
-            <SeatWrapper key={`seat-${seat.id}`}>
-              <label>
-                {seat.isAvailable ? (
-                  <>
-                    <Seat
-                      type="radio"
-                      name="seat"
-                      onChange={() => {
-                        // setSeatId(seat.id);
-                        let updatedValue = {};
-                        updatedValue = { seatId: seat.id };
-                        setReservationInfo((reservationInfo) => ({
-                          ...reservationInfo,
-                          ...updatedValue,
-                        }));
-                        console.log("INFO: ", reservationInfo);
-                      }}
-                    />
-                    <Available>{seat.id}</Available>
-                  </>
-                ) : (
-                  <Unavailable>{seat.id}</Unavailable>
-                )}
-              </label>
-            </SeatWrapper>
-          );
-        })
-      ) : (
-        <Placeholder>Select a Flight to view seating.</Placeholder>
-      )}
-    </Wrapper>
+    <BiggerWrapper>
+      <Wrapper>
+        {seating && seating.length > 0 ? (
+          seating.map((seat) => {
+            // console.log(seat.id);
+            return (
+              <SeatWrapper key={`seat-${seat.id}`}>
+                <label>
+                  {seat.isAvailable ? (
+                    <>
+                      <Seat
+                        type="radio"
+                        name="seat"
+                        onChange={() => {
+                          // setSeatId(seat.id);
+                          let updatedValue = {};
+                          updatedValue = { seatId: seat.id };
+                          setReservationInfo((reservationInfo) => ({
+                            ...reservationInfo,
+                            ...updatedValue,
+                          }));
+                          console.log("INFO: ", reservationInfo);
+                        }}
+                      />
+                      <Available>{seat.id}</Available>
+                    </>
+                  ) : (
+                    <Unavailable>{seat.id}</Unavailable>
+                  )}
+                </label>
+              </SeatWrapper>
+            );
+          })
+        ) : (
+          <Placeholder>Select a Flight to view seating.</Placeholder>
+        )}
+      </Wrapper>
+    </BiggerWrapper>
   );
 };
+
+const BiggerWrapper = styled.div`
+  height: 50vh;
+`;
 
 const Placeholder = styled.div`
   display: flex;
@@ -89,8 +95,8 @@ const Wrapper = styled.ol`
   border-right: 15px solid var(--color-alabama-crimson);
   border-left: 15px solid var(--color-alabama-crimson);
   margin: 24px 24px 0 0;
-  padding: 48px 5px;
-  height: 500px;
+  padding: 30px 5px;
+  /* height: 500px; */
   width: 300px;
   position: relative;
 `;
