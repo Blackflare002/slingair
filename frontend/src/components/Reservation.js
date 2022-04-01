@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
-const reservation = JSON.parse(sessionStorage.getItem("reservation"));
-
 const Reservation = () => {
+  const reservation = JSON.parse(sessionStorage.getItem("reservation"));
   return (
     <Wrapper>
       <InnerBox>

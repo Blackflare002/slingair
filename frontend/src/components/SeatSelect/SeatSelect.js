@@ -34,8 +34,8 @@ const SeatSelect = () => {
       .then((json) => {
         console.log(json);
         sessionStorage.setItem("reservation", JSON.stringify(json.data));
+        history.push("/confirmed");
       });
-    history.push("/confirmed");
   };
   //
   return (
