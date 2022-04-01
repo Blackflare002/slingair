@@ -2,9 +2,8 @@
 import styled from "styled-components";
 import tombstone from "../assets/tombstone.png";
 
-const reservation = JSON.parse(sessionStorage.getItem("reservation"));
-
 const Confirmation = () => {
+  const reservation = JSON.parse(sessionStorage.getItem("reservation"));
   return (
     <Wrapper>
       <InnerBox>
