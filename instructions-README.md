@@ -1,3 +1,5 @@
+(Instructions provided by Concordia Bootcamps)
+
 # Node.JS Project: SlingAir!
 
 <img src='frontend/src/assets/screenshots/header.png' style='width:100%' />
